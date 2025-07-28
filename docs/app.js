@@ -187,10 +187,11 @@ function createD3Heatmap(container, data, habitName) {
 
 // Create numerical trend chart for habits with values
 function createTrendChart(habitName, habitData, container) {
-    // Check if habit has numerical data (including 0 values)
-    const hasNumericalData = Object.values(habitData.data).some(d => 
-        d.value !== undefined && d.value !== null && habitData.unit !== 'times'
-    );
+    // Check if habit has meaningful numerical data (not just yes/no)
+    const meaningfulUnits = ['hr', 'hours', 'min', 'minutes', 'kCal', 'kcal', 'g', 'mg', 'fl oz', 'step', 'steps'];
+    const hasNumericalData = meaningfulUnits.includes(habitData.unit) && 
+        Object.values(habitData.data).some(d => d.value !== undefined && d.value !== null);
+    
     if (!hasNumericalData) return;
     
     const chartDiv = document.createElement('div');
