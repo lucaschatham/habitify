@@ -116,7 +116,7 @@ function createD3Heatmap(container, data, habitName) {
     // GitHub's exact heatmap colors
     const colorScale = d3.scaleOrdinal()
         .domain(['none', 'completed', 'skipped', 'in_progress', 'failed'])
-        .range(['#161b22', '#39d353', '#3572A5', '#0e4429', '#f85149']);
+        .range(['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39']);
     
     // Create a map for quick date lookup
     const dateMap = new Map(data.map(d => [d.date, d]));
@@ -159,7 +159,7 @@ function createD3Heatmap(container, data, habitName) {
             const dateStr = d.toISOString().split('T')[0];
             const dayData = dateMap.get(dateStr);
             // Use light gray (#161b22) for empty dates to match GitHub
-            return dayData ? colorScale(dayData.status) : '#161b22';
+            return dayData ? colorScale(dayData.status) : '#ebedf0';
         })
         .style('outline', '1px solid rgba(27, 31, 35, 0.06)')
         .append('title')
@@ -561,18 +561,40 @@ function createMiniHeatmap(data) {
 
 // Remove emojis from text
 function removeEmojis(text) {
-    return text.replace(/[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]|[\u{1F000}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{1F900}-\u{1F9FF}]|[\u{1FA70}-\u{1FAFF}]/gu, '').trim();
+    return text.replace(/[\p{Emoji_Presentation}\p{Emoji}\p{Extended_Pictographic}]/gu, '').replace(/[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]|[\u{1F000}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{1F900}-\u{1F9FF}]|[\u{1FA70}-\u{1FAFF}]/gu, '').trim();
 }
 
 // Define habit order as they appear in Habitify
 const habitOrder = [
     'Sleep 7hrs',
-    'Weigh Yourself',
+    'Weigh Yourself', 
     'Get 10min Morning Sun',
     'Burn 500+ kcal',
     'Take Morning Supps',
-    'Brush Morning Teeth & Wash Face'
-    // Add more as needed - habits not in this list will appear after in alphabetical order
+    'Brush Morning Teeth & Wash Face',
+    'Meditate 20min',
+    'Drink gallon of water',
+    'Eat 40g of Fiber',
+    'Eat 200g Protein',
+    'Eat 2800 Calories',
+    'Walk 10k Steps',
+    'Review 50 Flashcards',
+    'Focus on 1 task for 25min, 6x',
+    'Read/Listen to 20 Pages',
+    'Journal Today & Plan Tomorrow',
+    'Log & Categorize Expenses',
+    'Take Night Supps',
+    'Brush Evening Teeth & Floss',
+    'Wear Retainers',
+    'Keep Phone Out Of Bed',
+    'Connect w/ my partner',
+    'Post Online About #100Hard',
+    'Plan Week <15min',
+    '≥16min @ 90% HR',
+    'Post 3x on LinkedIn',
+    '24 Hour Fast/month',
+    'Update Personal Finance Dashboard <15min',
+    '10min Vocal Exercises'
 ];
 
 // Render all habits
