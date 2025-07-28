@@ -454,8 +454,8 @@ function calculateOverallStats() {
         if (stats.streak > 0) currentStreaks++;
         if (stats.streak > bestStreak) bestStreak = stats.streak;
         
-        // Clean name for display
-        const cleanName = removeEmojis(habitName).substring(0, 20);
+        // Keep full name for display
+        const cleanName = habitName;
         
         habitStreaks.push({
             name: cleanName,
@@ -559,42 +559,44 @@ function createMiniHeatmap(data) {
         });
 }
 
-// Remove emojis from text
+// Remove emojis from text - DISABLED to preserve habit names
 function removeEmojis(text) {
-    return text.replace(/[\p{Emoji_Presentation}\p{Emoji}\p{Extended_Pictographic}]/gu, '').replace(/[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]|[\u{1F000}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{1F900}-\u{1F9FF}]|[\u{1FA70}-\u{1FAFF}]/gu, '').trim();
+    return text; // Return text as-is to preserve emojis and full habit names
 }
 
-// Define habit order as they appear in Habitify
+// Define habit order as they appear in Habitify - INCLUDING EMOJIS
 const habitOrder = [
-    'Sleep 7hrs',
-    'Weigh Yourself', 
-    'Get 10min Morning Sun',
-    'Burn 500+ kcal',
-    'Take Morning Supps',
-    'Brush Morning Teeth & Wash Face',
-    'Meditate 20min',
-    'Drink gallon of water',
-    'Eat 40g of Fiber',
-    'Eat 200g Protein',
-    'Eat 2800 Calories',
-    'Walk 10k Steps',
-    'Review 50 Flashcards',
-    'Focus on 1 task for 25min, 6x',
-    'Read/Listen to 20 Pages',
-    'Journal Today & Plan Tomorrow',
-    'Log & Categorize Expenses',
-    'Take Night Supps',
-    'Brush Evening Teeth & Floss',
-    'Wear Retainers',
-    'Keep Phone Out Of Bed',
-    'Connect w/ my partner',
-    'Post Online About #100Hard',
-    'Plan Week <15min',
-    '≥16min @ 90% HR',
-    'Post 3x on LinkedIn',
-    '24 Hour Fast/month',
-    'Update Personal Finance Dashboard <15min',
-    '10min Vocal Exercises'
+    '😴 Sleep 7hrs',
+    '⚖️ Weigh Yourself', 
+    '☀️ Get 10min Morning Sun',
+    '🔥 Burn 500+ kcal',
+    '💊 Take Morning Supps',
+    '🪥 Brush Morning Teeth & Wash Face',
+    '🧘 Meditate 20min',
+    '💧 Drink gallon of water',
+    '🥦 Eat 40g of Fiber',
+    '🥩 Eat 200g Protein',
+    '🍽️ Eat 2800 Calories',
+    '🚶 Walk 10k Steps',
+    '📇 Review 50 Flashcards',
+    '🎯 Focus on 1 task for 25min, 6x',
+    '📚 Read/Listen to 20 Pages',
+    '📝 Journal Today & Plan Tomorrow',
+    '💰 Log & Categorize Expenses',
+    '💊 Take Night Supps',
+    '🦷 Brush Evening Teeth & Floss',
+    '😬 Wear Retainers',
+    '📵 Keep Phone Out Of Bed',
+    '💑 Connect w/ my partner',
+    '📱 Post Online About #100Hard',
+    '📅 Plan Week <15min',
+    '🏃 ≥16min @ 90% HR',
+    '💼 Post 3x on LinkedIn',
+    '🍽️ 24 Hour Fast/month',
+    '📊 Update Personal Finance Dashboard <15min',
+    '🎤 10min Vocal Exercises',
+    '⚡ Complete an MIT (at least /day)',
+    '🏋️ Complete a difficult workout'
 ];
 
 // Render all habits
@@ -607,8 +609,8 @@ function renderHabits() {
     
     // Sort habits according to Habitify order
     const sortedHabits = Object.entries(allHabitData).sort((a, b) => {
-        const aName = removeEmojis(a[0]);
-        const bName = removeEmojis(b[0]);
+        const aName = a[0];
+        const bName = b[0];
         const aIndex = habitOrder.indexOf(aName);
         const bIndex = habitOrder.indexOf(bName);
         
@@ -631,7 +633,7 @@ function renderHabits() {
         
         habitCard.innerHTML = `
             <div class="habit-header">
-                <h2 class="habit-title">${removeEmojis(habitName)}</h2>
+                <h2 class="habit-title">${habitName}</h2>
             </div>
             <div class="habit-stats">
                 <div class="stat-item">
