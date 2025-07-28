@@ -53,7 +53,7 @@ async function fetchHabitData() {
                     // Store data by date
                     allHabitData[habit.name].data[dayData.date] = {
                         logs: habit.logs,
-                        completed: habit.logs.some(log => log.status === 'completed'),
+                        completed: habit.logs.some(log => log.status === 'completed' || log.status === 'in_progress'),
                         value: habit.logs[0]?.value || 0,
                         status: habit.logs[0]?.status || 'none'
                     };
@@ -115,9 +115,10 @@ function createD3Heatmap(container, data, habitName) {
         .attr('height', height);
     
     // GitHub's exact heatmap colors
+    // Map 'in_progress' to green since that's what Habitify returns for completed habits
     const colorScale = d3.scaleOrdinal()
-        .domain(['none', 'completed', 'skipped', 'in_progress', 'failed'])
-        .range(['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39']);
+        .domain(['none', 'in_progress', 'completed', 'skipped', 'failed'])
+        .range(['#ebedf0', '#9be9a8', '#9be9a8', '#40c463', '#216e39']);
     
     // Create a map for quick date lookup
     const dateMap = new Map(data.map(d => [d.date, d]));
@@ -516,7 +517,7 @@ function createD3LineChart(container, data, goal, unit) {
 function calculateStats(habitData) {
     const dataArray = Object.values(habitData.data);
     const total = dataArray.length;
-    const completed = dataArray.filter(d => d.completed).length;
+    const completed = dataArray.filter(d => d.completed || d.status === 'in_progress').length;
     const streak = calculateCurrentStreak(habitData.data);
     
     return {
@@ -534,7 +535,8 @@ function calculateCurrentStreak(dataByDate) {
     const today = new Date().toISOString().split('T')[0];
     
     for (const date of sortedDates) {
-        if (dataByDate[date].completed) {
+        const data = dataByDate[date];
+        if (data.completed || data.status === 'in_progress') {
             streak++;
         } else if (date !== today) {
             // Only break streak if it's not today (allow for habits not done yet today)
@@ -677,20 +679,20 @@ function calculateOverallStats() {
         Object.entries(habitData.data).forEach(([date, dayData]) => {
             if (date === today) {
                 todayTotal++;
-                if (dayData.completed) todayCompleted++;
+                if (dayData.completed || dayData.status === 'in_progress') todayCompleted++;
             }
             if (date >= weekAgo) {
                 weekTotal++;
-                if (dayData.completed) weekCompleted++;
+                if (dayData.completed || dayData.status === 'in_progress') weekCompleted++;
             }
             if (date >= monthStartStr) {
                 monthTotal++;
-                if (dayData.completed) monthCompleted++;
+                if (dayData.completed || dayData.status === 'in_progress') monthCompleted++;
             }
             if (date >= thirtyDaysAgo) {
                 if (!last30Days[date]) last30Days[date] = { completed: 0, total: 0 };
                 last30Days[date].total++;
-                if (dayData.completed) last30Days[date].completed++;
+                if (dayData.completed || dayData.status === 'in_progress') last30Days[date].completed++;
             }
         });
     });
