@@ -126,16 +126,73 @@ h1 {
 }
 
 .trend-chart {
-    margin-top: 1rem;
-    padding-top: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
     border-top: 1px solid var(--gh-border-default);
 }
 
-.trend-chart h4 {
-    margin-bottom: 0.5rem;
+.data-visualization h4 {
+    margin-bottom: 1rem;
+    color: var(--gh-fg-default);
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.data-stats {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.stat-box {
+    background: var(--gh-canvas-inset);
+    border: 1px solid var(--gh-border-default);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 120px;
+}
+
+.stat-box .stat-label {
+    font-size: 0.75rem;
     color: var(--gh-fg-muted);
-    font-weight: 500;
-    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-box .stat-value {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--gh-fg-default);
+}
+
+.chart-container {
+    background: var(--gh-canvas-subtle);
+    border: 1px solid var(--gh-border-default);
+    border-radius: 6px;
+    padding: 1rem;
+    overflow-x: auto;
+}
+
+.chart-container svg {
+    display: block;
+    margin: 0 auto;
+}
+
+.value-label {
+    pointer-events: none;
+}
+
+.data-point {
+    cursor: pointer;
+}
+
+.data-point:hover circle {
+    r: 6;
+    filter: brightness(1.2);
 }
 
 #loading {
