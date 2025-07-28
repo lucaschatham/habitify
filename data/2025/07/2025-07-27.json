@@ -1,0 +1,234 @@
+{
+  "date": "2025-07-28",
+  "timestamp": "2025-07-28T05:54:12.222Z",
+  "habits": [
+    {
+      "name": "⚖️ Weigh Yourself",
+      "goal": 1,
+      "unit": "rep",
+      "logs": []
+    },
+    {
+      "name": "🧼 Wash Face",
+      "goal": 1,
+      "unit": "rep",
+      "logs": []
+    },
+    {
+      "name": "🖤 Connect w/ my partner",
+      "goal": 1,
+      "unit": "rep",
+      "logs": []
+    },
+    {
+      "name": "🧵 Floss",
+      "goal": 1,
+      "unit": "rep",
+      "logs": []
+    },
+    {
+      "name": "😬 Wear Retainers",
+      "goal": 1,
+      "unit": "rep",
+      "logs": []
+    },
+    {
+      "name": "🧾 Post Online About #100Hard 💯",
+      "goal": 1,
+      "unit": "rep",
+      "logs": []
+    },
+    {
+      "name": "💊 Take Night Supps",
+      "goal": 1,
+      "unit": "rep",
+      "logs": []
+    },
+    {
+      "name": "📵 Keep Phone Out Of Bed",
+      "goal": 1,
+      "unit": "rep",
+      "logs": []
+    },
+    {
+      "name": "Post 3x on LinkedIn",
+      "goal": 3,
+      "unit": "rep",
+      "logs": []
+    },
+    {
+      "name": "24 Hour Fast/month",
+      "goal": 1,
+      "unit": "rep",
+      "logs": []
+    },
+    {
+      "name": "🗓️ Plan Week <15min",
+      "goal": 1,
+      "unit": "rep",
+      "logs": []
+    },
+    {
+      "name": "🫀≥16min @ 90% HR",
+      "goal": 1,
+      "unit": "rep",
+      "logs": []
+    },
+    {
+      "name": "💊 Take Morning Supps",
+      "goal": 1,
+      "unit": "rep",
+      "logs": []
+    },
+    {
+      "name": "🗂️ Review 50 Flashcards 💯 ",
+      "goal": 1,
+      "unit": "rep",
+      "logs": []
+    },
+    {
+      "name": "🎧 DeepWork 2hours on #1 MIT",
+      "goal": 1,
+      "unit": "rep",
+      "logs": []
+    },
+    {
+      "name": "📖 Read/Listen to 20 Pages 💯 ",
+      "goal": 1,
+      "unit": "rep",
+      "logs": []
+    },
+    {
+      "name": "✅ Complete an MIT (at least 3/day)",
+      "goal": 3,
+      "unit": "rep",
+      "logs": []
+    },
+    {
+      "name": "🎙️10min Vocal Exercises",
+      "goal": 1,
+      "unit": "rep",
+      "logs": []
+    },
+    {
+      "name": "💊 Morning Supps",
+      "goal": 1,
+      "unit": "rep",
+      "logs": []
+    },
+    {
+      "name": "💰 Log & Categorize Expenses",
+      "goal": 1,
+      "unit": "rep",
+      "logs": []
+    },
+    {
+      "name": "🚫 No On-Screen Distractions",
+      "goal": 1,
+      "unit": "rep",
+      "logs": []
+    },
+    {
+      "name": "📝 Journal Today & Plan Tomorrow 💯",
+      "goal": 1,
+      "unit": "rep",
+      "logs": []
+    },
+    {
+      "name": "Update Personal Finance Dashboard <15min",
+      "goal": 1,
+      "unit": "rep",
+      "logs": []
+    },
+    {
+      "name": "🪥 Brush Evening Teeth & Floss",
+      "goal": 2,
+      "unit": "min",
+      "logs": []
+    },
+    {
+      "name": "😴 Sleep 7hrs",
+      "goal": 7,
+      "unit": "hr",
+      "logs": []
+    },
+    {
+      "name": "💧 Drink gallon of water 💯 ",
+      "goal": 130,
+      "unit": "fl oz",
+      "logs": []
+    },
+    {
+      "name": "🚶Walk 10k Steps",
+      "goal": 10000,
+      "unit": "step",
+      "logs": []
+    },
+    {
+      "name": "☕️ <500mg Caffeine Intake",
+      "goal": 500,
+      "unit": "mg",
+      "logs": []
+    },
+    {
+      "name": "🍽️ Eat 2800 Calories",
+      "goal": 2800,
+      "unit": "kCal",
+      "logs": []
+    },
+    {
+      "name": "🥩 Eat 200g Protein",
+      "goal": 200,
+      "unit": "g",
+      "logs": []
+    },
+    {
+      "name": "🪥 Brush Morning Teeth & Wash Face",
+      "goal": 2,
+      "unit": "min",
+      "logs": []
+    },
+    {
+      "name": "🎧 Focus on 1 task for 25min, 6x 💯",
+      "goal": 6,
+      "unit": "rep",
+      "logs": []
+    },
+    {
+      "name": "🧘 Meditate 20min 💯",
+      "goal": 20,
+      "unit": "min",
+      "logs": []
+    },
+    {
+      "name": "🚫No On-Screen Distractions",
+      "goal": 1,
+      "unit": "rep",
+      "logs": []
+    },
+    {
+      "name": "📵 <15min Social Media",
+      "goal": 15,
+      "unit": "min",
+      "logs": []
+    },
+    {
+      "name": "🥦 Eat 40g of Fiber",
+      "goal": 40,
+      "unit": "g",
+      "logs": []
+    },
+    {
+      "name": "🏋️‍♀️ Burn 500+ kcal 💯 ",
+      "goal": 500,
+      "unit": "kCal",
+      "logs": []
+    },
+    {
+      "name": "🌞 Get 10min Morning Sun",
+      "goal": 10,
+      "unit": "min",
+      "logs": []
+    }
+  ]
+}
