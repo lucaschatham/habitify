@@ -760,6 +760,13 @@ function calculateOverallStats() {
         .sort((a, b) => b.streak - a.streak)
         .slice(0, 5);
     
+    // Debug logging
+    console.log(`🐛 DASHBOARD CALCULATION DEBUG:`);
+    console.log(`  Today: ${today}`);
+    console.log(`  Today completed: ${todayCompleted}`);
+    console.log(`  Today total: ${todayTotal}`);
+    console.log(`  Today percentage: ${todayTotal > 0 ? (todayCompleted / todayTotal * 100).toFixed(1) : 0}%`);
+    
     return {
         totalHabits: Object.keys(allHabitData).length,
         todayCompleted,
