@@ -334,10 +334,219 @@ function calculateCurrentStreak(dataByDate) {
     return streak;
 }
 
+// Create dashboard
+function createDashboard() {
+    const dashboard = document.getElementById('dashboard');
+    dashboard.innerHTML = '';
+    
+    // Calculate overall statistics
+    const stats = calculateOverallStats();
+    
+    // Create dashboard grid
+    const dashboardHTML = `
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <div class="metric-label">
+                    <span>🎯</span>
+                    <span>Active Habits</span>
+                </div>
+                <div class="metric-value">${stats.totalHabits}</div>
+                <div class="metric-subtitle">Tracking daily progress</div>
+            </div>
+            
+            <div class="dashboard-card">
+                <div class="metric-label">
+                    <span>✅</span>
+                    <span>Today's Progress</span>
+                </div>
+                <div class="circular-progress">
+                    <svg class="progress-ring" viewBox="0 0 80 80">
+                        <circle class="progress-ring-circle" cx="40" cy="40" r="35"></circle>
+                        <circle class="progress-ring-progress" cx="40" cy="40" r="35"
+                            style="stroke-dasharray: ${220 * stats.todayCompletion}px 220px; stroke-dashoffset: 0;">
+                        </circle>
+                    </svg>
+                    <div class="circular-progress-text">
+                        <div class="metric-value">${Math.round(stats.todayCompletion * 100)}%</div>
+                        <div class="metric-subtitle">${stats.todayCompleted} of ${stats.todayTotal}</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-card">
+                <div class="metric-label">
+                    <span class="streak-fire">🔥</span>
+                    <span>Best Streak</span>
+                </div>
+                <div class="metric-value">${stats.bestStreak} days</div>
+                <div class="metric-subtitle">${stats.currentStreaks} active streaks</div>
+            </div>
+            
+            <div class="dashboard-card ${stats.weekCompletion < 0.5 ? 'warning' : ''}">
+                <div class="metric-label">
+                    <span>📊</span>
+                    <span>This Week</span>
+                </div>
+                <div class="metric-value">${Math.round(stats.weekCompletion * 100)}%</div>
+                <div class="metric-subtitle">${stats.weekCompleted} habits completed</div>
+            </div>
+        </div>
+        
+        <div class="activity-graph">
+            <h3>📈 Activity Overview (Last 30 Days)</h3>
+            <div id="mini-heatmap" class="mini-heatmap"></div>
+        </div>
+        
+        <div class="top-habits">
+            <h3>🏆 Top Performing Habits</h3>
+            <div class="habit-badges">
+                ${stats.topHabits.map(habit => `
+                    <span class="habit-badge">
+                        <span class="habit-badge-emoji">${habit.emoji}</span>
+                        <span>${habit.name}</span>
+                        <span class="habit-badge-streak">${habit.streak}d</span>
+                    </span>
+                `).join('')}
+            </div>
+        </div>
+    `;
+    
+    dashboard.innerHTML = dashboardHTML;
+    dashboard.style.display = 'block';
+    
+    // Create mini heatmap
+    createMiniHeatmap(stats.last30Days);
+}
+
+// Calculate overall statistics
+function calculateOverallStats() {
+    const today = new Date().toISOString().split('T')[0];
+    const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+    
+    let todayCompleted = 0;
+    let todayTotal = 0;
+    let weekCompleted = 0;
+    let weekTotal = 0;
+    let bestStreak = 0;
+    let currentStreaks = 0;
+    const last30Days = {};
+    const habitStreaks = [];
+    
+    Object.entries(allHabitData).forEach(([habitName, habitData]) => {
+        const stats = calculateStats(habitData);
+        
+        if (stats.streak > 0) currentStreaks++;
+        if (stats.streak > bestStreak) bestStreak = stats.streak;
+        
+        // Extract emoji from habit name
+        const emojiMatch = habitName.match(/^([\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}])/u);
+        const emoji = emojiMatch ? emojiMatch[0] : '📌';
+        const cleanName = habitName.replace(/^[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}]\s*/u, '').substring(0, 20);
+        
+        habitStreaks.push({
+            name: cleanName,
+            emoji: emoji,
+            streak: stats.streak,
+            completion: stats.percentage
+        });
+        
+        // Count today and week stats
+        Object.entries(habitData.data).forEach(([date, dayData]) => {
+            if (date === today) {
+                todayTotal++;
+                if (dayData.completed) todayCompleted++;
+            }
+            if (date >= weekAgo) {
+                weekTotal++;
+                if (dayData.completed) weekCompleted++;
+            }
+            if (date >= thirtyDaysAgo) {
+                if (!last30Days[date]) last30Days[date] = { completed: 0, total: 0 };
+                last30Days[date].total++;
+                if (dayData.completed) last30Days[date].completed++;
+            }
+        });
+    });
+    
+    // Get top 5 habits by streak
+    const topHabits = habitStreaks
+        .filter(h => h.streak > 0)
+        .sort((a, b) => b.streak - a.streak)
+        .slice(0, 5);
+    
+    return {
+        totalHabits: Object.keys(allHabitData).length,
+        todayCompleted,
+        todayTotal,
+        todayCompletion: todayTotal > 0 ? todayCompleted / todayTotal : 0,
+        weekCompleted,
+        weekTotal,
+        weekCompletion: weekTotal > 0 ? weekCompleted / weekTotal : 0,
+        bestStreak,
+        currentStreaks,
+        topHabits,
+        last30Days
+    };
+}
+
+// Create mini heatmap for dashboard
+function createMiniHeatmap(data) {
+    const container = document.getElementById('mini-heatmap');
+    const cellSize = 10;
+    const cellPadding = 2;
+    
+    const width = 30 * (cellSize + cellPadding) + 20;
+    const height = 7 * (cellSize + cellPadding) + 20;
+    
+    const svg = d3.select(container)
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height);
+    
+    const colorScale = d3.scaleLinear()
+        .domain([0, 0.5, 1])
+        .range(['#161b22', '#0e4429', '#39d353']);
+    
+    // Generate last 30 days
+    const days = [];
+    for (let i = 29; i >= 0; i--) {
+        const date = new Date();
+        date.setDate(date.getDate() - i);
+        days.push(date);
+    }
+    
+    svg.selectAll('rect')
+        .data(days)
+        .enter()
+        .append('rect')
+        .attr('x', (d, i) => Math.floor(i / 7) * (cellSize + cellPadding))
+        .attr('y', d => d.getDay() * (cellSize + cellPadding))
+        .attr('width', cellSize)
+        .attr('height', cellSize)
+        .attr('rx', 2)
+        .attr('fill', d => {
+            const dateStr = d.toISOString().split('T')[0];
+            const dayData = data[dateStr];
+            if (!dayData || dayData.total === 0) return '#161b22';
+            return colorScale(dayData.completed / dayData.total);
+        })
+        .append('title')
+        .text(d => {
+            const dateStr = d.toISOString().split('T')[0];
+            const dayData = data[dateStr];
+            if (!dayData) return `${dateStr}: No data`;
+            return `${dateStr}: ${dayData.completed}/${dayData.total} completed`;
+        });
+}
+
 // Render all habits
 function renderHabits() {
     const container = document.getElementById('habits-container');
     container.innerHTML = '';
+    
+    // Create dashboard first
+    createDashboard();
     
     // Sort habits by name
     const sortedHabits = Object.entries(allHabitData).sort((a, b) => a[0].localeCompare(b[0]));
