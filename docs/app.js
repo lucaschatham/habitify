@@ -50,8 +50,9 @@ async function fetchHabitData() {
                         };
                     }
                     
-                    // Store data by date
-                    allHabitData[habit.name].data[dayData.date] = {
+                    // Store data by date - normalize date to YYYY-MM-DD format
+                    const normalizedDate = dayData.date.split('T')[0];
+                    allHabitData[habit.name].data[normalizedDate] = {
                         logs: habit.logs,
                         completed: habit.logs.some(log => log.status === 'completed' || log.status === 'in_progress'),
                         value: habit.logs[0]?.value || 0,
@@ -81,7 +82,7 @@ function createCompletionHeatmap(habitName, habitData, container) {
     // Convert data to array format for D3
     const data = Object.entries(habitData.data).map(([date, info]) => ({
         date: date,
-        value: info.completed ? 1 : 0,
+        value: info.completed || info.status === 'in_progress' ? 1 : 0,
         status: info.status
     }));
     
