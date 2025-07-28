@@ -26,7 +26,8 @@ async function fetchHabitData() {
         const filePromises = dataFiles.map(async (file) => {
             const contentResponse = await fetch(file.url);
             const contentData = await contentResponse.json();
-            const decodedContent = atob(contentData.content);
+            // Properly decode base64 with UTF-8 support
+            const decodedContent = decodeURIComponent(escape(atob(contentData.content)));
             const parsed = JSON.parse(decodedContent);
             console.log(`File ${file.path} has ${parsed.habits?.length || 0} habits`);
             return parsed;
