@@ -187,35 +187,243 @@ function createD3Heatmap(container, data, habitName) {
 
 // Create numerical trend chart for habits with values
 function createTrendChart(habitName, habitData, container) {
-    // Check if habit has numerical data
-    const hasNumericalData = Object.values(habitData.data).some(d => d.value > 0 && d.status !== 'skipped');
+    // Check if habit has numerical data (including 0 values)
+    const hasNumericalData = Object.values(habitData.data).some(d => 
+        d.value !== undefined && d.value !== null && habitData.unit !== 'times'
+    );
     if (!hasNumericalData) return;
     
     const chartDiv = document.createElement('div');
     chartDiv.className = 'trend-chart';
-    chartDiv.innerHTML = '<h4>Progress Trend</h4>';
     container.appendChild(chartDiv);
+    
+    // Create data visualization section
+    const dataSection = document.createElement('div');
+    dataSection.className = 'data-visualization';
+    dataSection.innerHTML = `
+        <h4>📊 ${habitData.unit === 'hours' ? 'Sleep Data' : 'Progress'} Trend</h4>
+        <div class="data-stats">
+            <div class="stat-box">
+                <span class="stat-label">Average</span>
+                <span class="stat-value" id="avg-${habitName.replace(/\s+/g, '-')}">--</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">Goal</span>
+                <span class="stat-value">${habitData.goal} ${habitData.unit}</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">This Week</span>
+                <span class="stat-value" id="week-${habitName.replace(/\s+/g, '-')}">--</span>
+            </div>
+        </div>
+    `;
+    chartDiv.appendChild(dataSection);
     
     const chartContainer = document.createElement('div');
     chartContainer.id = `trend-${habitName.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '')}`;
+    chartContainer.className = 'chart-container';
     chartDiv.appendChild(chartContainer);
     
-    // Prepare data
+    // Prepare data - include all dates, even with 0 values
     const trendData = Object.entries(habitData.data)
-        .filter(([date, info]) => info.value > 0)
         .map(([date, info]) => ({
             date: new Date(date),
-            value: info.value
+            value: info.value || 0,
+            status: info.status
         }))
-        .sort((a, b) => a.date - b.date);
+        .sort((a, b) => a.date - b.date)
+        .slice(-30); // Last 30 days for cleaner visualization
     
     if (trendData.length === 0) return;
     
-    // Create line chart
-    createD3LineChart(chartContainer, trendData, habitData.goal, habitData.unit);
+    // Calculate statistics
+    const values = trendData.map(d => d.value).filter(v => v > 0);
+    const avg = values.length > 0 ? (values.reduce((a, b) => a + b, 0) / values.length).toFixed(1) : 0;
+    const weekValues = trendData.slice(-7).map(d => d.value).filter(v => v > 0);
+    const weekAvg = weekValues.length > 0 ? (weekValues.reduce((a, b) => a + b, 0) / weekValues.length).toFixed(1) : 0;
+    
+    document.getElementById(`avg-${habitName.replace(/\s+/g, '-')}`).textContent = `${avg} ${habitData.unit}`;
+    document.getElementById(`week-${habitName.replace(/\s+/g, '-')}`).textContent = `${weekAvg} ${habitData.unit}`;
+    
+    // Create enhanced line chart with data points
+    createEnhancedChart(chartContainer, trendData, habitData.goal, habitData.unit);
 }
 
-// Create D3 line chart
+// Create enhanced chart with data table feel
+function createEnhancedChart(container, data, goal, unit) {
+    const margin = { top: 20, right: 20, bottom: 50, left: 60 };
+    const width = 900 - margin.left - margin.right;
+    const height = 250 - margin.top - margin.bottom;
+    
+    const svg = d3.select(container)
+        .append('svg')
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+        .append('g')
+        .attr('transform', `translate(${margin.left},${margin.top})`);
+    
+    // Add background grid
+    svg.append('rect')
+        .attr('width', width)
+        .attr('height', height)
+        .attr('fill', 'var(--gh-canvas-subtle)')
+        .attr('stroke', 'var(--gh-border-default)')
+        .attr('stroke-width', 1);
+    
+    // Scales
+    const xScale = d3.scaleTime()
+        .domain(d3.extent(data, d => d.date))
+        .range([0, width]);
+    
+    const yScale = d3.scaleLinear()
+        .domain([0, d3.max(data.concat([{value: goal}]), d => d.value) * 1.1])
+        .nice()
+        .range([height, 0]);
+    
+    // Grid lines
+    const gridLines = svg.append('g')
+        .attr('class', 'grid-lines');
+    
+    // Horizontal grid lines
+    gridLines.selectAll('.h-grid')
+        .data(yScale.ticks(5))
+        .enter()
+        .append('line')
+        .attr('class', 'h-grid')
+        .attr('x1', 0)
+        .attr('x2', width)
+        .attr('y1', d => yScale(d))
+        .attr('y2', d => yScale(d))
+        .attr('stroke', 'var(--gh-border-muted)')
+        .attr('stroke-width', 1)
+        .attr('opacity', 0.3);
+    
+    // Vertical grid lines (daily)
+    gridLines.selectAll('.v-grid')
+        .data(data)
+        .enter()
+        .append('line')
+        .attr('class', 'v-grid')
+        .attr('x1', d => xScale(d.date))
+        .attr('x2', d => xScale(d.date))
+        .attr('y1', 0)
+        .attr('y2', height)
+        .attr('stroke', 'var(--gh-border-muted)')
+        .attr('stroke-width', 1)
+        .attr('opacity', 0.2);
+    
+    // Goal line
+    if (goal) {
+        svg.append('line')
+            .attr('x1', 0)
+            .attr('x2', width)
+            .attr('y1', yScale(goal))
+            .attr('y2', yScale(goal))
+            .attr('stroke', 'var(--gh-success)')
+            .attr('stroke-width', 2)
+            .attr('stroke-dasharray', '5,5')
+            .attr('opacity', 0.7);
+        
+        svg.append('text')
+            .attr('x', width - 5)
+            .attr('y', yScale(goal) - 5)
+            .attr('text-anchor', 'end')
+            .style('fill', 'var(--gh-success)')
+            .style('font-size', '12px')
+            .text(`Goal: ${goal} ${unit}`);
+    }
+    
+    // Area under the line
+    const area = d3.area()
+        .x(d => xScale(d.date))
+        .y0(height)
+        .y1(d => yScale(d.value))
+        .curve(d3.curveMonotoneX);
+    
+    svg.append('path')
+        .datum(data)
+        .attr('fill', 'var(--gh-info)')
+        .attr('fill-opacity', 0.1)
+        .attr('d', area);
+    
+    // Line
+    const line = d3.line()
+        .x(d => xScale(d.date))
+        .y(d => yScale(d.value))
+        .curve(d3.curveMonotoneX);
+    
+    svg.append('path')
+        .datum(data)
+        .attr('fill', 'none')
+        .attr('stroke', 'var(--gh-info)')
+        .attr('stroke-width', 2)
+        .attr('d', line);
+    
+    // Data points with values
+    const points = svg.selectAll('.data-point')
+        .data(data)
+        .enter()
+        .append('g')
+        .attr('class', 'data-point')
+        .attr('transform', d => `translate(${xScale(d.date)}, ${yScale(d.value)})`);
+    
+    // Circles for data points
+    points.append('circle')
+        .attr('r', 4)
+        .attr('fill', d => d.value >= goal ? 'var(--gh-success)' : 'var(--gh-info)')
+        .attr('stroke', 'var(--gh-canvas-default)')
+        .attr('stroke-width', 2);
+    
+    // Value labels (show for last 7 days)
+    const recentData = data.slice(-7);
+    svg.selectAll('.value-label')
+        .data(recentData)
+        .enter()
+        .append('text')
+        .attr('class', 'value-label')
+        .attr('x', d => xScale(d.date))
+        .attr('y', d => yScale(d.value) - 10)
+        .attr('text-anchor', 'middle')
+        .style('fill', 'var(--gh-fg-muted)')
+        .style('font-size', '11px')
+        .style('font-weight', '600')
+        .text(d => d.value > 0 ? d.value : '');
+    
+    // X axis with dates
+    const xAxis = d3.axisBottom(xScale)
+        .tickFormat(d3.timeFormat('%b %d'))
+        .ticks(7);
+    
+    svg.append('g')
+        .attr('transform', `translate(0,${height})`)
+        .call(xAxis)
+        .style('color', 'var(--gh-fg-muted)');
+    
+    // Y axis
+    const yAxis = d3.axisLeft(yScale)
+        .ticks(5);
+    
+    svg.append('g')
+        .call(yAxis)
+        .style('color', 'var(--gh-fg-muted)');
+    
+    // Y axis label
+    svg.append('text')
+        .attr('transform', 'rotate(-90)')
+        .attr('y', 0 - margin.left)
+        .attr('x', 0 - (height / 2))
+        .attr('dy', '1em')
+        .style('text-anchor', 'middle')
+        .style('fill', 'var(--gh-fg-muted)')
+        .style('font-size', '12px')
+        .text(unit.charAt(0).toUpperCase() + unit.slice(1));
+    
+    // Interactive tooltips
+    points.append('title')
+        .text(d => `${d.date.toLocaleDateString()}: ${d.value} ${unit}${d.value >= goal ? ' ✓' : ''}`);
+}
+
+// Create D3 line chart (legacy function for compatibility)
 function createD3LineChart(container, data, goal, unit) {
     const margin = { top: 20, right: 60, bottom: 40, left: 60 };
     const width = 900 - margin.left - margin.right;
