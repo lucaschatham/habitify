@@ -62,6 +62,24 @@ async function fetchHabitData() {
             }
         });
         
+        // Remove duplicates - check for habits with same name (ignoring emoji spacing)
+        const seenNames = new Set();
+        const deduplicatedData = {};
+        
+        Object.entries(allHabitData).forEach(([habitName, habitData]) => {
+            // Create a key by removing spaces between emoji and text
+            const nameKey = habitName.replace(/\s+/g, ' ').toLowerCase();
+            
+            // Skip if we've seen a similar name
+            if (!seenNames.has(nameKey)) {
+                seenNames.add(nameKey);
+                deduplicatedData[habitName] = habitData;
+            }
+        });
+        
+        // Replace allHabitData with deduplicated version
+        allHabitData = deduplicatedData;
+        
         console.log('Total unique habits found:', Object.keys(allHabitData).length);
         console.log('Habit names:', Object.keys(allHabitData));
         
