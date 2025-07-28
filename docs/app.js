@@ -52,11 +52,27 @@ async function fetchHabitData() {
                     
                     // Store data by date - normalize date to YYYY-MM-DD format
                     const normalizedDate = dayData.date.split('T')[0];
+                    // Determine actual completion based on value vs goal
+                    const logValue = habit.logs[0]?.value || 0;
+                    const logStatus = habit.logs[0]?.status || 'none';
+                    let actuallyCompleted = false;
+                    
+                    if (logStatus === 'completed') {
+                        actuallyCompleted = true;
+                    } else if (habit.unit === 'rep') {
+                        // For repetition-based habits, any value > 0 means completed
+                        actuallyCompleted = logValue > 0;
+                    } else {
+                        // For measurement habits, value must meet or exceed goal
+                        actuallyCompleted = logValue >= habit.goal;
+                    }
+                    
                     allHabitData[habit.name].data[normalizedDate] = {
                         logs: habit.logs,
-                        completed: habit.logs.some(log => log.status === 'completed' || log.status === 'in_progress'),
-                        value: habit.logs[0]?.value || 0,
-                        status: habit.logs[0]?.status || 'none'
+                        completed: actuallyCompleted,
+                        value: logValue,
+                        status: logStatus,
+                        goalMet: actuallyCompleted
                     };
                 });
             }
@@ -100,8 +116,8 @@ function createCompletionHeatmap(habitName, habitData, container) {
     // Convert data to array format for D3
     const data = Object.entries(habitData.data).map(([date, info]) => ({
         date: date,
-        value: info.completed || info.status === 'in_progress' ? 1 : 0,
-        status: info.status
+        value: info.completed ? 1 : 0,
+        status: info.completed ? 'completed' : info.status
     }));
     
     // Create GitHub-style heatmap using D3
@@ -536,7 +552,7 @@ function createD3LineChart(container, data, goal, unit) {
 function calculateStats(habitData) {
     const dataArray = Object.values(habitData.data);
     const total = dataArray.length;
-    const completed = dataArray.filter(d => d.completed || d.status === 'in_progress').length;
+    const completed = dataArray.filter(d => d.completed).length;
     const streak = calculateCurrentStreak(habitData.data);
     
     return {
@@ -555,7 +571,7 @@ function calculateCurrentStreak(dataByDate) {
     
     for (const date of sortedDates) {
         const data = dataByDate[date];
-        if (data.completed || data.status === 'in_progress') {
+        if (data.completed) {
             streak++;
         } else if (date !== today) {
             // Only break streak if it's not today (allow for habits not done yet today)
@@ -719,21 +735,21 @@ function calculateOverallStats() {
                 // Only count daily habits for today's progress
                 if (periodicity === 'daily') {
                     todayTotal++;
-                    if (dayData.completed || dayData.status === 'in_progress') todayCompleted++;
+                    if (dayData.completed) todayCompleted++;
                 }
             }
             if (date >= weekAgo) {
                 weekTotal++;
-                if (dayData.completed || dayData.status === 'in_progress') weekCompleted++;
+                if (dayData.completed) weekCompleted++;
             }
             if (date >= monthStartStr) {
                 monthTotal++;
-                if (dayData.completed || dayData.status === 'in_progress') monthCompleted++;
+                if (dayData.completed) monthCompleted++;
             }
             if (date >= thirtyDaysAgo) {
                 if (!last30Days[date]) last30Days[date] = { completed: 0, total: 0 };
                 last30Days[date].total++;
-                if (dayData.completed || dayData.status === 'in_progress') last30Days[date].completed++;
+                if (dayData.completed) last30Days[date].completed++;
             }
         });
     });
