@@ -163,6 +163,151 @@ footer {
     font-size: 0.875rem;
 }
 
+/* Dashboard Styles */
+.dashboard {
+    margin-bottom: 2rem;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.dashboard-card {
+    background: var(--gh-canvas-subtle);
+    border: 1px solid var(--gh-border-default);
+    border-radius: 6px;
+    padding: 1.25rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboard-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gh-success) 0%, var(--gh-info) 100%);
+}
+
+.dashboard-card.warning::before {
+    background: linear-gradient(90deg, var(--gh-warning) 0%, var(--gh-danger) 100%);
+}
+
+.metric-label {
+    font-size: 0.875rem;
+    color: var(--gh-fg-muted);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.metric-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--gh-fg-default);
+    line-height: 1;
+}
+
+.metric-subtitle {
+    font-size: 0.75rem;
+    color: var(--gh-fg-subtle);
+    margin-top: 0.25rem;
+}
+
+.streak-fire {
+    color: #ff6b6b;
+    font-size: 1.5rem;
+}
+
+.progress-ring {
+    width: 80px;
+    height: 80px;
+    transform: rotate(-90deg);
+}
+
+.progress-ring-circle {
+    stroke: var(--gh-border-default);
+    fill: none;
+    stroke-width: 6;
+}
+
+.progress-ring-progress {
+    stroke: var(--gh-success);
+    fill: none;
+    stroke-width: 6;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.5s ease;
+}
+
+.circular-progress {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.circular-progress-text {
+    flex: 1;
+}
+
+.activity-graph {
+    background: var(--gh-canvas-subtle);
+    border: 1px solid var(--gh-border-default);
+    border-radius: 6px;
+    padding: 1.25rem;
+}
+
+.activity-graph h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--gh-fg-default);
+}
+
+.mini-heatmap {
+    overflow-x: auto;
+}
+
+.top-habits {
+    background: var(--gh-canvas-subtle);
+    border: 1px solid var(--gh-border-default);
+    border-radius: 6px;
+    padding: 1.25rem;
+}
+
+.top-habits h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--gh-fg-default);
+}
+
+.habit-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: var(--gh-canvas-default);
+    border: 1px solid var(--gh-border-muted);
+    border-radius: 20px;
+    margin: 0.25rem;
+    font-size: 0.875rem;
+}
+
+.habit-badge-emoji {
+    font-size: 1.125rem;
+}
+
+.habit-badge-streak {
+    color: var(--gh-success);
+    font-weight: 600;
+}
+
 /* SVG text styles */
 .day-label {
     fill: var(--gh-fg-muted);
