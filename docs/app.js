@@ -158,9 +158,10 @@ function createD3Heatmap(container, data, habitName) {
         .attr('fill', d => {
             const dateStr = d.toISOString().split('T')[0];
             const dayData = dateMap.get(dateStr);
+            // Use light gray (#161b22) for empty dates to match GitHub
             return dayData ? colorScale(dayData.status) : '#161b22';
         })
-        .style('outline', 'none')
+        .style('outline', '1px solid rgba(27, 31, 35, 0.06)')
         .append('title')
         .text(d => {
             const dateStr = d.toISOString().split('T')[0];
@@ -390,6 +391,15 @@ function createDashboard() {
                 <div class="metric-value">${Math.round(stats.weekCompletion * 100)}%</div>
                 <div class="metric-subtitle">${stats.weekCompleted} habits completed</div>
             </div>
+            
+            <div class="dashboard-card ${stats.monthCompletion < 0.5 ? 'warning' : ''}">
+                <div class="metric-label">
+                    <span>📅</span>
+                    <span>This Month</span>
+                </div>
+                <div class="metric-value">${Math.round(stats.monthCompletion * 100)}%</div>
+                <div class="metric-subtitle">${stats.monthCompleted} habits completed</div>
+            </div>
         </div>
         
         <div class="activity-graph">
@@ -402,7 +412,6 @@ function createDashboard() {
             <div class="habit-badges">
                 ${stats.topHabits.map(habit => `
                     <span class="habit-badge">
-                        <span class="habit-badge-emoji">${habit.emoji}</span>
                         <span>${habit.name}</span>
                         <span class="habit-badge-streak">${habit.streak}d</span>
                     </span>
@@ -423,11 +432,17 @@ function calculateOverallStats() {
     const today = new Date().toISOString().split('T')[0];
     const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
     const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+    const monthStart = new Date();
+    monthStart.setDate(1);
+    monthStart.setHours(0, 0, 0, 0);
+    const monthStartStr = monthStart.toISOString().split('T')[0];
     
     let todayCompleted = 0;
     let todayTotal = 0;
     let weekCompleted = 0;
     let weekTotal = 0;
+    let monthCompleted = 0;
+    let monthTotal = 0;
     let bestStreak = 0;
     let currentStreaks = 0;
     const last30Days = {};
@@ -439,19 +454,16 @@ function calculateOverallStats() {
         if (stats.streak > 0) currentStreaks++;
         if (stats.streak > bestStreak) bestStreak = stats.streak;
         
-        // Extract emoji from habit name
-        const emojiMatch = habitName.match(/^([\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}])/u);
-        const emoji = emojiMatch ? emojiMatch[0] : '📌';
-        const cleanName = habitName.replace(/^[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}]\s*/u, '').substring(0, 20);
+        // Clean name for display
+        const cleanName = removeEmojis(habitName).substring(0, 20);
         
         habitStreaks.push({
             name: cleanName,
-            emoji: emoji,
             streak: stats.streak,
             completion: stats.percentage
         });
         
-        // Count today and week stats
+        // Count today, week, and month stats
         Object.entries(habitData.data).forEach(([date, dayData]) => {
             if (date === today) {
                 todayTotal++;
@@ -460,6 +472,10 @@ function calculateOverallStats() {
             if (date >= weekAgo) {
                 weekTotal++;
                 if (dayData.completed) weekCompleted++;
+            }
+            if (date >= monthStartStr) {
+                monthTotal++;
+                if (dayData.completed) monthCompleted++;
             }
             if (date >= thirtyDaysAgo) {
                 if (!last30Days[date]) last30Days[date] = { completed: 0, total: 0 };
@@ -483,6 +499,9 @@ function calculateOverallStats() {
         weekCompleted,
         weekTotal,
         weekCompletion: weekTotal > 0 ? weekCompleted / weekTotal : 0,
+        monthCompleted,
+        monthTotal,
+        monthCompletion: monthTotal > 0 ? monthCompleted / monthTotal : 0,
         bestStreak,
         currentStreaks,
         topHabits,
@@ -540,6 +559,22 @@ function createMiniHeatmap(data) {
         });
 }
 
+// Remove emojis from text
+function removeEmojis(text) {
+    return text.replace(/[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]|[\u{1F000}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{1F900}-\u{1F9FF}]|[\u{1FA70}-\u{1FAFF}]/gu, '').trim();
+}
+
+// Define habit order as they appear in Habitify
+const habitOrder = [
+    'Sleep 7hrs',
+    'Weigh Yourself',
+    'Get 10min Morning Sun',
+    'Burn 500+ kcal',
+    'Take Morning Supps',
+    'Brush Morning Teeth & Wash Face'
+    // Add more as needed - habits not in this list will appear after in alphabetical order
+];
+
 // Render all habits
 function renderHabits() {
     const container = document.getElementById('habits-container');
@@ -548,8 +583,23 @@ function renderHabits() {
     // Create dashboard first
     createDashboard();
     
-    // Sort habits by name
-    const sortedHabits = Object.entries(allHabitData).sort((a, b) => a[0].localeCompare(b[0]));
+    // Sort habits according to Habitify order
+    const sortedHabits = Object.entries(allHabitData).sort((a, b) => {
+        const aName = removeEmojis(a[0]);
+        const bName = removeEmojis(b[0]);
+        const aIndex = habitOrder.indexOf(aName);
+        const bIndex = habitOrder.indexOf(bName);
+        
+        // If both are in the order list, sort by their position
+        if (aIndex !== -1 && bIndex !== -1) {
+            return aIndex - bIndex;
+        }
+        // If only one is in the list, it comes first
+        if (aIndex !== -1) return -1;
+        if (bIndex !== -1) return 1;
+        // Otherwise sort alphabetically
+        return aName.localeCompare(bName);
+    });
     
     sortedHabits.forEach(([habitName, habitData]) => {
         const stats = calculateStats(habitData);
@@ -559,7 +609,7 @@ function renderHabits() {
         
         habitCard.innerHTML = `
             <div class="habit-header">
-                <h2 class="habit-title">${habitName}</h2>
+                <h2 class="habit-title">${removeEmojis(habitName)}</h2>
             </div>
             <div class="habit-stats">
                 <div class="stat-item">
