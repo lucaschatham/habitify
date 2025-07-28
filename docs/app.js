@@ -589,7 +589,7 @@ function createDashboard() {
             <div class="dashboard-card">
                 <div class="metric-label">
                     <span>✅</span>
-                    <span>Today's Progress</span>
+                    <span>Daily Habits Progress</span>
                 </div>
                 <div class="circular-progress">
                     <svg class="progress-ring" viewBox="0 0 80 80">
@@ -658,6 +658,24 @@ function createDashboard() {
     createMiniHeatmap(stats.last30Days);
 }
 
+// Determine habit periodicity based on name patterns
+function getHabitPeriodicity(habitName) {
+    const name = habitName.toLowerCase();
+    
+    // Weekly habits
+    if (name.includes('week') || name.includes('plan week')) {
+        return 'weekly';
+    }
+    
+    // Monthly habits
+    if (name.includes('month') || name.includes('/month') || name.includes('24 hour fast')) {
+        return 'monthly';
+    }
+    
+    // Default to daily
+    return 'daily';
+}
+
 // Calculate overall statistics
 function calculateOverallStats() {
     const today = new Date().toISOString().split('T')[0];
@@ -681,6 +699,7 @@ function calculateOverallStats() {
     
     Object.entries(allHabitData).forEach(([habitName, habitData]) => {
         const stats = calculateStats(habitData);
+        const periodicity = getHabitPeriodicity(habitName);
         
         if (stats.streak > 0) currentStreaks++;
         if (stats.streak > bestStreak) bestStreak = stats.streak;
@@ -697,8 +716,11 @@ function calculateOverallStats() {
         // Count today, week, and month stats
         Object.entries(habitData.data).forEach(([date, dayData]) => {
             if (date === today) {
-                todayTotal++;
-                if (dayData.completed || dayData.status === 'in_progress') todayCompleted++;
+                // Only count daily habits for today's progress
+                if (periodicity === 'daily') {
+                    todayTotal++;
+                    if (dayData.completed || dayData.status === 'in_progress') todayCompleted++;
+                }
             }
             if (date >= weekAgo) {
                 weekTotal++;
