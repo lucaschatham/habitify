@@ -1,0 +1,582 @@
+{
+  "version": "1.0",
+  "date": "2025-07-21",
+  "timestamp": "2025-07-28T06:11:53.643Z",
+  "metadata": {
+    "habitsCount": 38,
+    "source": "habitify-api",
+    "syncVersion": "1.0.0"
+  },
+  "habits": [
+    {
+      "id": "-OT3bzSCAnJirU-TcHan",
+      "name": "⚖️ Weigh Yourself",
+      "goal": 1,
+      "unit": "rep",
+      "area": "Daily",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "rep",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "-OT3z1VpgkvI_c7CSbzy",
+      "name": "🧼 Wash Face",
+      "goal": 1,
+      "unit": "rep",
+      "area": "Daily",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "rep",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "-OT3z8OcxpXkWhANv3Qv",
+      "name": "🖤 Connect w/ my partner",
+      "goal": 1,
+      "unit": "rep",
+      "area": "Daily",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "rep",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "-OT3zMmHOsk2wdQBuMDG",
+      "name": "🧵 Floss",
+      "goal": 1,
+      "unit": "rep",
+      "area": "Daily",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "rep",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "-OT3zoRCPgjlY1EA4mVb",
+      "name": "😬 Wear Retainers",
+      "goal": 1,
+      "unit": "rep",
+      "area": "Daily",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "rep",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "-OT4-ZjCQpsanueVGtU4",
+      "name": "🧾 Post Online About #100Hard 💯",
+      "goal": 1,
+      "unit": "rep",
+      "area": "Daily",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "rep",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "-OT4-fhwTlJ6quCBDTMB",
+      "name": "💊 Take Night Supps",
+      "goal": 1,
+      "unit": "rep",
+      "area": "Daily",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "rep",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "-OT401Ulq2LSwyk1m696",
+      "name": "📵 Keep Phone Out Of Bed",
+      "goal": 1,
+      "unit": "rep",
+      "area": "Daily",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "rep",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "-OT40oyZzPBHV2_IVlGM",
+      "name": "Post 3x on LinkedIn",
+      "goal": 3,
+      "unit": "rep",
+      "area": "Weekly",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "rep",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "-OT41Ftg5TuH2RQHAhKp",
+      "name": "24 Hour Fast/month",
+      "goal": 1,
+      "unit": "rep",
+      "area": "Monthly",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "rep",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "-OT41USI0oBe4kIiPHi7",
+      "name": "🗓️ Plan Week <15min",
+      "goal": 1,
+      "unit": "rep",
+      "area": "Weekly",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "rep",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "-OT41uvSqBbmOyK36CeJ",
+      "name": "🫀≥16min @ 90% HR",
+      "goal": 1,
+      "unit": "rep",
+      "area": "Weekly",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "rep",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "-OT44SRrzwK2Yflezo3F",
+      "name": "💊 Take Morning Supps",
+      "goal": 1,
+      "unit": "rep",
+      "area": "Daily",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "rep",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "-OT44_Nk3f-kJNY5li91",
+      "name": "🗂️ Review 50 Flashcards 💯 ",
+      "goal": 1,
+      "unit": "rep",
+      "area": "Daily",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "rep",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "-OT44kNPZDvnNpaWlh-D",
+      "name": "🎧 DeepWork 2hours on #1 MIT",
+      "goal": 1,
+      "unit": "rep",
+      "area": "Daily",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "rep",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "-OT44rHVIvVC_vbh-CI4",
+      "name": "📖 Read/Listen to 20 Pages 💯 ",
+      "goal": 1,
+      "unit": "rep",
+      "area": "Daily",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "rep",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "-OT457ZLe1tLlTC0Gysi",
+      "name": "✅ Complete an MIT (at least 3/day)",
+      "goal": 3,
+      "unit": "rep",
+      "area": "Daily",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "rep",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "-OVjLgn45l2J3iaXYjmz",
+      "name": "🎙️10min Vocal Exercises",
+      "goal": 1,
+      "unit": "rep",
+      "area": "General",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "rep",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "-OVjMvgXSTgUWjxG9sTL",
+      "name": "💊 Morning Supps",
+      "goal": 1,
+      "unit": "rep",
+      "area": "General",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "rep",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "-OVjUbDwhGWjss0n9bvn",
+      "name": "💰 Log & Categorize Expenses",
+      "goal": 1,
+      "unit": "rep",
+      "area": "General",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "rep",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "-OVjZvb02xy7fvUtExDT",
+      "name": "🚫 No On-Screen Distractions",
+      "goal": 1,
+      "unit": "rep",
+      "area": "General",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "rep",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "-OVj_GjGDFAXoEbpWdzL",
+      "name": "📝 Journal Today & Plan Tomorrow 💯",
+      "goal": 1,
+      "unit": "rep",
+      "area": "General",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "rep",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "-OVk_7hwhJxBAs4QKoG2",
+      "name": "Update Personal Finance Dashboard <15min",
+      "goal": 1,
+      "unit": "rep",
+      "area": "General",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "rep",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "0464F363-0DD3-4374-AA35-2293F474A131",
+      "name": "🪥 Brush Evening Teeth & Floss",
+      "goal": 2,
+      "unit": "min",
+      "area": "General",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "min",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "0F232BAE-0E48-47C1-8E6C-681CD243B9E9",
+      "name": "😴 Sleep 7hrs",
+      "goal": 7,
+      "unit": "hr",
+      "area": "Daily",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "hr",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "15B6EB8B-D86E-4F3B-89AA-C9565C3E9E16",
+      "name": "💧 Drink gallon of water 💯 ",
+      "goal": 130,
+      "unit": "fl oz",
+      "area": "Daily",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "fl oz",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "2139D2F1-4129-4CB7-BE6C-9FE55FFD664C",
+      "name": "🚶Walk 10k Steps",
+      "goal": 10000,
+      "unit": "step",
+      "area": "Daily",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "step",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "3602CD94-BBC6-488F-9DC5-C4F9B88B5252",
+      "name": "☕️ <500mg Caffeine Intake",
+      "goal": 500,
+      "unit": "mg",
+      "area": "Daily",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "mg",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "363BFD59-3D7A-49F3-9237-F2A9945CF53F",
+      "name": "🍽️ Eat 2800 Calories",
+      "goal": 2800,
+      "unit": "kCal",
+      "area": "Daily",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "kCal",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "394DACA8-3F9D-4C07-A336-3E9D722125BE",
+      "name": "🥩 Eat 200g Protein",
+      "goal": 200,
+      "unit": "g",
+      "area": "Daily",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "g",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "45E25C57-C9FC-4508-8690-A8720340A0CE",
+      "name": "🪥 Brush Morning Teeth & Wash Face",
+      "goal": 2,
+      "unit": "min",
+      "area": "Daily",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "min",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "46AA1D83-923F-4912-A61E-850796FD481C",
+      "name": "🎧 Focus on 1 task for 25min, 6x 💯",
+      "goal": 6,
+      "unit": "rep",
+      "area": "Daily",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "rep",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "59FD19DA-9649-4207-8A76-A6463BF9AE0C",
+      "name": "🧘 Meditate 20min 💯",
+      "goal": 20,
+      "unit": "min",
+      "area": "Daily",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "min",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "6FC78B3F-48EE-4DA4-A44A-2796551D366E",
+      "name": "🚫No On-Screen Distractions",
+      "goal": 1,
+      "unit": "rep",
+      "area": "General",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "rep",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "8427E36A-F965-4E8F-964C-2EC00010E4D3",
+      "name": "📵 <15min Social Media",
+      "goal": 15,
+      "unit": "min",
+      "area": "Daily",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "min",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "A45676FD-D1A9-45D7-8AE4-8B3B941C59EA",
+      "name": "🥦 Eat 40g of Fiber",
+      "goal": 40,
+      "unit": "g",
+      "area": "Daily",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "g",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "CCAA6DA1-F32F-45D5-AE00-F92107F2566C",
+      "name": "🏋️‍♀️ Burn 500+ kcal 💯 ",
+      "goal": 500,
+      "unit": "kCal",
+      "area": "Daily",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "kCal",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    },
+    {
+      "id": "F4AE7A1E-BD8F-47AE-83CE-4969D975246F",
+      "name": "🌞 Get 10min Morning Sun",
+      "goal": 10,
+      "unit": "min",
+      "area": "Daily",
+      "logs": [
+        {
+          "value": 0,
+          "unit": "min",
+          "status": "none",
+          "target_date": "2025-07-22"
+        }
+      ]
+    }
+  ]
+}
