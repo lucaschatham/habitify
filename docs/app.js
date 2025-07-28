@@ -5,7 +5,6 @@ const DATA_PATH = 'data';
 
 // State
 let allHabitData = {};
-let heatmapInstances = new Map();
 
 // Fetch all habit data from the repository
 async function fetchHabitData() {
@@ -17,8 +16,11 @@ async function fetchHabitData() {
         // Filter for JSON files in the data directory
         const dataFiles = tree.tree.filter(file => 
             file.path.startsWith(`${DATA_PATH}/`) && 
-            file.path.endsWith('.json')
+            file.path.endsWith('.json') &&
+            !file.path.endsWith('.gitkeep')
         );
+        
+        console.log(`Found ${dataFiles.length} data files`);
         
         // Fetch each file's content
         const filePromises = dataFiles.map(async (file) => {
@@ -39,16 +41,17 @@ async function fetchHabitData() {
                             name: habit.name,
                             unit: habit.unit,
                             goal: habit.goal,
-                            data: []
+                            data: {}
                         };
                     }
                     
-                    // Add this day's data
-                    allHabitData[habit.name].data.push({
-                        date: dayData.date,
+                    // Store data by date
+                    allHabitData[habit.name].data[dayData.date] = {
                         logs: habit.logs,
-                        completed: habit.logs.some(log => log.status === 'completed')
-                    });
+                        completed: habit.logs.some(log => log.status === 'completed'),
+                        value: habit.logs[0]?.value || 0,
+                        status: habit.logs[0]?.status || 'none'
+                    };
                 });
             }
         });
@@ -60,68 +63,222 @@ async function fetchHabitData() {
     }
 }
 
-// Create heatmap for a habit
-function createHeatmap(habitName, habitData, container) {
-    // Prepare data for cal-heatmap
-    const heatmapData = {};
+// Create completion heatmap for a habit
+function createCompletionHeatmap(habitName, habitData, container) {
+    const heatmapDiv = document.createElement('div');
+    heatmapDiv.className = 'heatmap-chart';
+    heatmapDiv.id = `heatmap-${habitName.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '')}`;
+    container.appendChild(heatmapDiv);
     
-    habitData.data.forEach(day => {
-        const timestamp = new Date(day.date).getTime() / 1000; // Unix timestamp
-        heatmapData[timestamp] = day.completed ? 1 : 0;
-    });
+    // Convert data to array format for D3
+    const data = Object.entries(habitData.data).map(([date, info]) => ({
+        date: date,
+        value: info.completed ? 1 : 0,
+        status: info.status
+    }));
     
-    // Create heatmap instance
-    const cal = new CalHeatmap();
-    cal.paint({
-        itemSelector: container,
-        data: {
-            source: heatmapData,
-            type: 'json',
-            x: 'date',
-            y: 'value'
-        },
-        range: 12, // Show 12 months
-        domain: {
-            type: 'month',
-            gutter: 10,
-            label: {
-                text: 'MMM YYYY',
-                position: 'top'
-            }
-        },
-        subDomain: {
-            type: 'day',
-            gutter: 2,
-            width: 11,
-            height: 11,
-            radius: 2
-        },
-        scale: {
-            color: {
-                type: 'threshold',
-                range: ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39'],
-                domain: [0, 1]
-            }
-        },
-        date: {
-            start: new Date(new Date().setMonth(new Date().getMonth() - 11))
-        }
-    });
+    // Create GitHub-style heatmap using D3
+    createD3Heatmap(heatmapDiv, data, habitName);
+}
+
+// Create D3 heatmap
+function createD3Heatmap(container, data, habitName) {
+    const width = 900;
+    const height = 150;
+    const cellSize = 15;
+    const cellPadding = 2;
     
-    // Add tooltips
-    cal.on('click', function(event, timestamp, value) {
-        const date = new Date(timestamp * 1000).toLocaleDateString();
-        const status = value ? 'Completed' : 'Not completed';
-        console.log(`${habitName} on ${date}: ${status}`);
-    });
+    // Clear previous content
+    d3.select(container).selectAll("*").remove();
     
-    heatmapInstances.set(habitName, cal);
+    const svg = d3.select(container)
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height);
+    
+    // Calculate date range
+    const dates = data.map(d => new Date(d.date));
+    const minDate = d3.min(dates);
+    const maxDate = d3.max(dates);
+    
+    // Calculate weeks
+    const weeks = d3.timeWeeks(
+        d3.timeWeek.floor(minDate),
+        d3.timeWeek.ceil(maxDate)
+    );
+    
+    // Color scale
+    const colorScale = d3.scaleOrdinal()
+        .domain(['none', 'completed', 'skipped', 'in_progress', 'failed'])
+        .range(['#ebedf0', '#40c463', '#ffc107', '#9be9a8', '#dc3545']);
+    
+    // Create a map for quick date lookup
+    const dateMap = new Map(data.map(d => [d.date, d]));
+    
+    // Draw cells
+    const cellGroups = svg.selectAll('g')
+        .data(d3.timeDays(minDate, d3.timeDay.offset(maxDate, 1)))
+        .enter()
+        .append('g')
+        .attr('transform', d => {
+            const weekDiff = d3.timeWeek.count(d3.timeWeek.floor(minDate), d);
+            const dayOfWeek = d.getDay();
+            return `translate(${weekDiff * (cellSize + cellPadding) + 50}, ${dayOfWeek * (cellSize + cellPadding) + 20})`;
+        });
+    
+    cellGroups.append('rect')
+        .attr('width', cellSize)
+        .attr('height', cellSize)
+        .attr('rx', 2)
+        .attr('fill', d => {
+            const dateStr = d.toISOString().split('T')[0];
+            const dayData = dateMap.get(dateStr);
+            return dayData ? colorScale(dayData.status) : '#ebedf0';
+        })
+        .append('title')
+        .text(d => {
+            const dateStr = d.toISOString().split('T')[0];
+            const dayData = dateMap.get(dateStr);
+            return `${dateStr}: ${dayData ? dayData.status : 'no data'}`;
+        });
+    
+    // Add day labels
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    svg.selectAll('.day-label')
+        .data(days)
+        .enter()
+        .append('text')
+        .attr('class', 'day-label')
+        .attr('x', 40)
+        .attr('y', (d, i) => i * (cellSize + cellPadding) + 30)
+        .attr('text-anchor', 'end')
+        .style('font-size', '12px')
+        .text(d => d);
+}
+
+// Create numerical trend chart for habits with values
+function createTrendChart(habitName, habitData, container) {
+    // Check if habit has numerical data
+    const hasNumericalData = Object.values(habitData.data).some(d => d.value > 0 && d.status !== 'skipped');
+    if (!hasNumericalData) return;
+    
+    const chartDiv = document.createElement('div');
+    chartDiv.className = 'trend-chart';
+    chartDiv.innerHTML = '<h4>Progress Trend</h4>';
+    container.appendChild(chartDiv);
+    
+    const chartContainer = document.createElement('div');
+    chartContainer.id = `trend-${habitName.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '')}`;
+    chartDiv.appendChild(chartContainer);
+    
+    // Prepare data
+    const trendData = Object.entries(habitData.data)
+        .filter(([date, info]) => info.value > 0)
+        .map(([date, info]) => ({
+            date: new Date(date),
+            value: info.value
+        }))
+        .sort((a, b) => a.date - b.date);
+    
+    if (trendData.length === 0) return;
+    
+    // Create line chart
+    createD3LineChart(chartContainer, trendData, habitData.goal, habitData.unit);
+}
+
+// Create D3 line chart
+function createD3LineChart(container, data, goal, unit) {
+    const margin = { top: 20, right: 60, bottom: 40, left: 60 };
+    const width = 900 - margin.left - margin.right;
+    const height = 200 - margin.top - margin.bottom;
+    
+    const svg = d3.select(container)
+        .append('svg')
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+        .append('g')
+        .attr('transform', `translate(${margin.left},${margin.top})`);
+    
+    // Scales
+    const xScale = d3.scaleTime()
+        .domain(d3.extent(data, d => d.date))
+        .range([0, width]);
+    
+    const yScale = d3.scaleLinear()
+        .domain([0, d3.max(data, d => Math.max(d.value, goal || d.value))])
+        .nice()
+        .range([height, 0]);
+    
+    // Line generator
+    const line = d3.line()
+        .x(d => xScale(d.date))
+        .y(d => yScale(d.value))
+        .curve(d3.curveMonotoneX);
+    
+    // Add axes
+    svg.append('g')
+        .attr('transform', `translate(0,${height})`)
+        .call(d3.axisBottom(xScale).tickFormat(d3.timeFormat('%b %d')));
+    
+    svg.append('g')
+        .call(d3.axisLeft(yScale));
+    
+    // Add unit label
+    svg.append('text')
+        .attr('transform', 'rotate(-90)')
+        .attr('y', 0 - margin.left)
+        .attr('x', 0 - (height / 2))
+        .attr('dy', '1em')
+        .style('text-anchor', 'middle')
+        .style('font-size', '12px')
+        .text(unit || 'Value');
+    
+    // Add goal line if exists
+    if (goal) {
+        svg.append('line')
+            .attr('x1', 0)
+            .attr('x2', width)
+            .attr('y1', yScale(goal))
+            .attr('y2', yScale(goal))
+            .attr('stroke', '#28a745')
+            .attr('stroke-width', 2)
+            .attr('stroke-dasharray', '5,5');
+        
+        svg.append('text')
+            .attr('x', width - 5)
+            .attr('y', yScale(goal) - 5)
+            .attr('text-anchor', 'end')
+            .style('fill', '#28a745')
+            .style('font-size', '12px')
+            .text(`Goal: ${goal} ${unit}`);
+    }
+    
+    // Add line
+    svg.append('path')
+        .datum(data)
+        .attr('fill', 'none')
+        .attr('stroke', '#0366d6')
+        .attr('stroke-width', 2)
+        .attr('d', line);
+    
+    // Add dots
+    svg.selectAll('.dot')
+        .data(data)
+        .enter().append('circle')
+        .attr('class', 'dot')
+        .attr('cx', d => xScale(d.date))
+        .attr('cy', d => yScale(d.value))
+        .attr('r', 4)
+        .attr('fill', '#0366d6')
+        .append('title')
+        .text(d => `${d.date.toLocaleDateString()}: ${d.value} ${unit}`);
 }
 
 // Calculate habit statistics
 function calculateStats(habitData) {
-    const total = habitData.data.length;
-    const completed = habitData.data.filter(d => d.completed).length;
+    const dataArray = Object.values(habitData.data);
+    const total = dataArray.length;
+    const completed = dataArray.filter(d => d.completed).length;
     const streak = calculateCurrentStreak(habitData.data);
     
     return {
@@ -133,26 +290,16 @@ function calculateStats(habitData) {
 }
 
 // Calculate current streak
-function calculateCurrentStreak(data) {
-    // Sort by date descending
-    const sorted = [...data].sort((a, b) => 
-        new Date(b.date).getTime() - new Date(a.date).getTime()
-    );
-    
+function calculateCurrentStreak(dataByDate) {
+    const sortedDates = Object.keys(dataByDate).sort().reverse();
     let streak = 0;
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const today = new Date().toISOString().split('T')[0];
     
-    for (let i = 0; i < sorted.length; i++) {
-        const logDate = new Date(sorted[i].date);
-        logDate.setHours(0, 0, 0, 0);
-        
-        // Check if this is today or yesterday (allowing for one day gap)
-        const daysDiff = Math.floor((today - logDate) / (1000 * 60 * 60 * 24));
-        
-        if (daysDiff <= i + 1 && sorted[i].completed) {
+    for (const date of sortedDates) {
+        if (dataByDate[date].completed) {
             streak++;
-        } else {
+        } else if (date !== today) {
+            // Only break streak if it's not today (allow for habits not done yet today)
             break;
         }
     }
@@ -165,7 +312,10 @@ function renderHabits() {
     const container = document.getElementById('habits-container');
     container.innerHTML = '';
     
-    Object.entries(allHabitData).forEach(([habitName, habitData]) => {
+    // Sort habits by name
+    const sortedHabits = Object.entries(allHabitData).sort((a, b) => a[0].localeCompare(b[0]));
+    
+    sortedHabits.forEach(([habitName, habitData]) => {
         const stats = calculateStats(habitData);
         
         const habitCard = document.createElement('div');
@@ -189,34 +339,21 @@ function renderHabits() {
                     <span class="stat-value">${stats.completed}/${stats.total}</span>
                 </div>
             </div>
-            <div class="heatmap-container" id="heatmap-${habitName.replace(/\s+/g, '-')}"></div>
-            <div class="legend">
-                <span>Less</span>
-                <div class="legend-item">
-                    <div class="legend-box" style="background: #ebedf0;"></div>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-box" style="background: #9be9a8;"></div>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-box" style="background: #40c463;"></div>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-box" style="background: #30a14e;"></div>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-box" style="background: #216e39;"></div>
-                </div>
-                <span>More</span>
-            </div>
+            <div class="heatmap-container"></div>
         `;
         
         container.appendChild(habitCard);
         
         // Create heatmap
-        const heatmapContainer = document.getElementById(`heatmap-${habitName.replace(/\s+/g, '-')}`);
-        createHeatmap(habitName, habitData, heatmapContainer);
+        const heatmapContainer = habitCard.querySelector('.heatmap-container');
+        createCompletionHeatmap(habitName, habitData, heatmapContainer);
+        
+        // Create trend chart if applicable
+        createTrendChart(habitName, habitData, habitCard);
     });
+    
+    // Update last updated time
+    document.getElementById('last-updated').textContent = new Date().toLocaleString();
 }
 
 // Initialize the app
@@ -230,10 +367,9 @@ async function init() {
     if (success && Object.keys(allHabitData).length > 0) {
         loading.style.display = 'none';
         container.style.display = 'block';
-        renderHabits();
         
-        // Update last updated time
-        document.getElementById('last-updated').textContent = new Date().toLocaleString();
+        console.log(`Loaded ${Object.keys(allHabitData).length} habits`);
+        renderHabits();
     } else {
         loading.style.display = 'none';
         error.style.display = 'block';
