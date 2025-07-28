@@ -90,47 +90,65 @@ function createCompletionHeatmap(habitName, habitData, container) {
 
 // Create D3 heatmap
 function createD3Heatmap(container, data, habitName) {
-    const width = 900;
-    const height = 150;
-    const cellSize = 15;
+    const cellSize = 11;
     const cellPadding = 2;
+    const monthLabelHeight = 15;
+    const weekLabelWidth = 15;
     
     // Clear previous content
     d3.select(container).selectAll("*").remove();
+    
+    // Get the current date and one year ago
+    const now = new Date();
+    const yearAgo = new Date(now);
+    yearAgo.setFullYear(yearAgo.getFullYear() - 1);
+    
+    // Calculate dimensions based on a full year
+    const weeksInYear = 53;
+    const width = (cellSize + cellPadding) * weeksInYear + weekLabelWidth + 20;
+    const height = (cellSize + cellPadding) * 7 + monthLabelHeight + 20;
     
     const svg = d3.select(container)
         .append('svg')
         .attr('width', width)
         .attr('height', height);
     
-    // Calculate date range
-    const dates = data.map(d => new Date(d.date));
-    const minDate = d3.min(dates);
-    const maxDate = d3.max(dates);
-    
-    // Calculate weeks
-    const weeks = d3.timeWeeks(
-        d3.timeWeek.floor(minDate),
-        d3.timeWeek.ceil(maxDate)
-    );
-    
-    // Color scale
+    // GitHub's exact heatmap colors
     const colorScale = d3.scaleOrdinal()
         .domain(['none', 'completed', 'skipped', 'in_progress', 'failed'])
-        .range(['#ebedf0', '#40c463', '#ffc107', '#9be9a8', '#dc3545']);
+        .range(['#161b22', '#39d353', '#3572A5', '#0e4429', '#f85149']);
     
     // Create a map for quick date lookup
     const dateMap = new Map(data.map(d => [d.date, d]));
     
-    // Draw cells
-    const cellGroups = svg.selectAll('g')
-        .data(d3.timeDays(minDate, d3.timeDay.offset(maxDate, 1)))
+    // Generate all days for the past year
+    const days = d3.timeDays(yearAgo, now);
+    
+    // Create month labels
+    const monthLabels = d3.timeMonths(yearAgo, now);
+    svg.selectAll('.month-label')
+        .data(monthLabels)
+        .enter()
+        .append('text')
+        .attr('class', 'month-label')
+        .attr('x', d => {
+            const weekNumber = d3.timeWeek.count(yearAgo, d);
+            return weekNumber * (cellSize + cellPadding) + weekLabelWidth + 10;
+        })
+        .attr('y', monthLabelHeight - 5)
+        .style('font-size', '10px')
+        .style('fill', '#7d8590')
+        .text(d => d3.timeFormat('%b')(d));
+    
+    // Draw cells for each day
+    const cellGroups = svg.selectAll('.day-cell')
+        .data(days)
         .enter()
         .append('g')
         .attr('transform', d => {
-            const weekDiff = d3.timeWeek.count(d3.timeWeek.floor(minDate), d);
+            const weekDiff = d3.timeWeek.count(yearAgo, d);
             const dayOfWeek = d.getDay();
-            return `translate(${weekDiff * (cellSize + cellPadding) + 50}, ${dayOfWeek * (cellSize + cellPadding) + 20})`;
+            return `translate(${weekDiff * (cellSize + cellPadding) + weekLabelWidth + 10}, ${dayOfWeek * (cellSize + cellPadding) + monthLabelHeight + 5})`;
         });
     
     cellGroups.append('rect')
@@ -140,8 +158,9 @@ function createD3Heatmap(container, data, habitName) {
         .attr('fill', d => {
             const dateStr = d.toISOString().split('T')[0];
             const dayData = dateMap.get(dateStr);
-            return dayData ? colorScale(dayData.status) : '#ebedf0';
+            return dayData ? colorScale(dayData.status) : '#161b22';
         })
+        .style('outline', 'none')
         .append('title')
         .text(d => {
             const dateStr = d.toISOString().split('T')[0];
@@ -149,17 +168,18 @@ function createD3Heatmap(container, data, habitName) {
             return `${dateStr}: ${dayData ? dayData.status : 'no data'}`;
         });
     
-    // Add day labels
-    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    // Add day labels (only show Mon, Wed, Fri)
+    const dayLabels = ['Sun', '', 'Tue', '', 'Thu', '', 'Sat'];
     svg.selectAll('.day-label')
-        .data(days)
+        .data(dayLabels)
         .enter()
         .append('text')
         .attr('class', 'day-label')
-        .attr('x', 40)
-        .attr('y', (d, i) => i * (cellSize + cellPadding) + 30)
+        .attr('x', weekLabelWidth)
+        .attr('y', (d, i) => i * (cellSize + cellPadding) + monthLabelHeight + 13)
         .attr('text-anchor', 'end')
-        .style('font-size', '12px')
+        .style('font-size', '9px')
+        .style('fill', '#7d8590')
         .text(d => d);
 }
 
