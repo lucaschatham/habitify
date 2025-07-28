@@ -20,21 +20,25 @@ async function fetchHabitData() {
             !file.path.endsWith('.gitkeep')
         );
         
-        console.log(`Found ${dataFiles.length} data files`);
+        console.log(`Found ${dataFiles.length} data files:`, dataFiles.map(f => f.path));
         
         // Fetch each file's content
         const filePromises = dataFiles.map(async (file) => {
             const contentResponse = await fetch(file.url);
             const contentData = await contentResponse.json();
             const decodedContent = atob(contentData.content);
-            return JSON.parse(decodedContent);
+            const parsed = JSON.parse(decodedContent);
+            console.log(`File ${file.path} has ${parsed.habits?.length || 0} habits`);
+            return parsed;
         });
         
         const allData = await Promise.all(filePromises);
+        console.log('Total files loaded:', allData.length);
         
         // Process data into habit-centric structure
         allData.forEach(dayData => {
             if (dayData.habits) {
+                console.log(`Processing ${dayData.habits.length} habits for date ${dayData.date}`);
                 dayData.habits.forEach(habit => {
                     if (!allHabitData[habit.name]) {
                         allHabitData[habit.name] = {
@@ -55,6 +59,9 @@ async function fetchHabitData() {
                 });
             }
         });
+        
+        console.log('Total unique habits found:', Object.keys(allHabitData).length);
+        console.log('Habit names:', Object.keys(allHabitData));
         
         return true;
     } catch (error) {
