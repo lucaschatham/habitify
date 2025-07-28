@@ -1,462 +1,234 @@
 {
-  "version": "1.0",
   "date": "2025-07-28",
-  "timestamp": "2025-07-28T21:24:12.552Z",
-  "metadata": {
-    "habitsCount": 30,
-    "source": "habitify-api",
-    "syncVersion": "1.0.0"
-  },
+  "timestamp": "2025-07-28T21:55:43.485Z",
   "habits": [
     {
-      "id": "-OT3bzSCAnJirU-TcHan",
       "name": "⚖️ Weigh Yourself",
       "goal": 1,
       "unit": "rep",
-      "area": "Daily",
-      "logs": [
-        {
-          "value": 0,
-          "unit": "rep",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "-OT3z8OcxpXkWhANv3Qv",
+      "name": "🧼 Wash Face",
+      "goal": 1,
+      "unit": "rep",
+      "logs": []
+    },
+    {
       "name": "🖤 Connect w/ my partner",
       "goal": 1,
       "unit": "rep",
-      "area": "Daily",
-      "logs": [
-        {
-          "value": 0,
-          "unit": "rep",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "-OT3zoRCPgjlY1EA4mVb",
+      "name": "🧵 Floss",
+      "goal": 1,
+      "unit": "rep",
+      "logs": []
+    },
+    {
       "name": "😬 Wear Retainers",
       "goal": 1,
       "unit": "rep",
-      "area": "Daily",
-      "logs": [
-        {
-          "value": 0,
-          "unit": "rep",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "-OT4-ZjCQpsanueVGtU4",
       "name": "🧾 Post Online About #100Hard 💯",
       "goal": 1,
       "unit": "rep",
-      "area": "Daily",
-      "logs": [
-        {
-          "value": 0,
-          "unit": "rep",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "-OT4-fhwTlJ6quCBDTMB",
       "name": "💊 Take Night Supps",
       "goal": 1,
       "unit": "rep",
-      "area": "Daily",
-      "logs": [
-        {
-          "value": 0,
-          "unit": "rep",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "-OT401Ulq2LSwyk1m696",
       "name": "📵 Keep Phone Out Of Bed",
       "goal": 1,
       "unit": "rep",
-      "area": "Daily",
-      "logs": [
-        {
-          "value": 0,
-          "unit": "rep",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "-OT40oyZzPBHV2_IVlGM",
       "name": "Post 3x on LinkedIn",
       "goal": 3,
       "unit": "rep",
-      "area": "Weekly",
-      "logs": [
-        {
-          "value": 0,
-          "unit": "rep",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "-OT41Ftg5TuH2RQHAhKp",
       "name": "24 Hour Fast/month",
       "goal": 1,
       "unit": "rep",
-      "area": "Monthly",
-      "logs": [
-        {
-          "value": 0,
-          "unit": "rep",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "-OT41USI0oBe4kIiPHi7",
       "name": "🗓️ Plan Week <15min",
       "goal": 1,
       "unit": "rep",
-      "area": "Weekly",
-      "logs": [
-        {
-          "value": 0,
-          "unit": "rep",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "-OT41uvSqBbmOyK36CeJ",
       "name": "🫀≥16min @ 90% HR",
       "goal": 1,
       "unit": "rep",
-      "area": "Weekly",
-      "logs": [
-        {
-          "value": 0,
-          "unit": "rep",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "-OT44SRrzwK2Yflezo3F",
       "name": "💊 Take Morning Supps",
       "goal": 1,
       "unit": "rep",
-      "area": "Daily",
-      "logs": [
-        {
-          "value": 0,
-          "unit": "rep",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "-OT44_Nk3f-kJNY5li91",
       "name": "🗂️ Review 50 Flashcards 💯 ",
       "goal": 1,
       "unit": "rep",
-      "area": "Daily",
-      "logs": [
-        {
-          "value": 0,
-          "unit": "rep",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "-OT44rHVIvVC_vbh-CI4",
+      "name": "🎧 DeepWork 2hours on #1 MIT",
+      "goal": 1,
+      "unit": "rep",
+      "logs": []
+    },
+    {
       "name": "📖 Read/Listen to 20 Pages 💯 ",
       "goal": 1,
       "unit": "rep",
-      "area": "Daily",
-      "logs": [
-        {
-          "value": 0,
-          "unit": "rep",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "-OVjLgn45l2J3iaXYjmz",
+      "name": "✅ Complete an MIT (at least 3/day)",
+      "goal": 3,
+      "unit": "rep",
+      "logs": []
+    },
+    {
       "name": "🎙️10min Vocal Exercises",
       "goal": 1,
       "unit": "rep",
-      "area": "General",
-      "logs": [
-        {
-          "value": 0,
-          "unit": "rep",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "-OVjUbDwhGWjss0n9bvn",
+      "name": "💊 Morning Supps",
+      "goal": 1,
+      "unit": "rep",
+      "logs": []
+    },
+    {
       "name": "💰 Log & Categorize Expenses",
       "goal": 1,
       "unit": "rep",
-      "area": "General",
-      "logs": [
-        {
-          "value": 0,
-          "unit": "rep",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "-OVjZvb02xy7fvUtExDT",
       "name": "🚫 No On-Screen Distractions",
       "goal": 1,
       "unit": "rep",
-      "area": "General",
-      "logs": [
-        {
-          "value": 0,
-          "unit": "rep",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "-OVj_GjGDFAXoEbpWdzL",
       "name": "📝 Journal Today & Plan Tomorrow 💯",
       "goal": 1,
       "unit": "rep",
-      "area": "General",
-      "logs": [
-        {
-          "value": 0,
-          "unit": "rep",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "-OVk_7hwhJxBAs4QKoG2",
       "name": "Update Personal Finance Dashboard <15min",
       "goal": 1,
       "unit": "rep",
-      "area": "General",
-      "logs": [
-        {
-          "value": 0,
-          "unit": "rep",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "0464F363-0DD3-4374-AA35-2293F474A131",
       "name": "🪥 Brush Evening Teeth & Floss",
       "goal": 2,
       "unit": "min",
-      "area": "General",
-      "logs": [
-        {
-          "value": 0,
-          "unit": "min",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "0F232BAE-0E48-47C1-8E6C-681CD243B9E9",
       "name": "😴 Sleep 7hrs",
       "goal": 7,
       "unit": "hr",
-      "area": "Daily",
-      "logs": [
-        {
-          "value": 0,
-          "unit": "hr",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "15B6EB8B-D86E-4F3B-89AA-C9565C3E9E16",
       "name": "💧 Drink gallon of water 💯 ",
       "goal": 130,
       "unit": "fl oz",
-      "area": "Daily",
-      "logs": [
-        {
-          "value": 45.78700233958848,
-          "unit": "fl oz",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "2139D2F1-4129-4CB7-BE6C-9FE55FFD664C",
       "name": "🚶Walk 10k Steps",
       "goal": 10000,
       "unit": "step",
-      "area": "Daily",
-      "logs": [
-        {
-          "value": 75,
-          "unit": "step",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "363BFD59-3D7A-49F3-9237-F2A9945CF53F",
+      "name": "☕️ <500mg Caffeine Intake",
+      "goal": 500,
+      "unit": "mg",
+      "logs": []
+    },
+    {
       "name": "🍽️ Eat 2800 Calories",
       "goal": 2800,
       "unit": "kCal",
-      "area": "Daily",
-      "logs": [
-        {
-          "value": 1674.1954437898821,
-          "unit": "kCal",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "394DACA8-3F9D-4C07-A336-3E9D722125BE",
       "name": "🥩 Eat 200g Protein",
       "goal": 200,
       "unit": "g",
-      "area": "Daily",
-      "logs": [
-        {
-          "value": 84.77842576650207,
-          "unit": "g",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "45E25C57-C9FC-4508-8690-A8720340A0CE",
       "name": "🪥 Brush Morning Teeth & Wash Face",
       "goal": 2,
       "unit": "min",
-      "area": "Daily",
-      "logs": [
-        {
-          "value": 0,
-          "unit": "min",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "46AA1D83-923F-4912-A61E-850796FD481C",
       "name": "🎧 Focus on 1 task for 25min, 6x 💯",
       "goal": 6,
       "unit": "rep",
-      "area": "Daily",
-      "logs": [
-        {
-          "value": 0,
-          "unit": "rep",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "59FD19DA-9649-4207-8A76-A6463BF9AE0C",
       "name": "🧘 Meditate 20min 💯",
       "goal": 20,
       "unit": "min",
-      "area": "Daily",
-      "logs": [
-        {
-          "value": 0,
-          "unit": "min",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "A45676FD-D1A9-45D7-8AE4-8B3B941C59EA",
+      "name": "🚫No On-Screen Distractions",
+      "goal": 1,
+      "unit": "rep",
+      "logs": []
+    },
+    {
+      "name": "📵 <15min Social Media",
+      "goal": 15,
+      "unit": "min",
+      "logs": []
+    },
+    {
       "name": "🥦 Eat 40g of Fiber",
       "goal": 40,
       "unit": "g",
-      "area": "Daily",
-      "logs": [
-        {
-          "value": 18.9101489020288,
-          "unit": "g",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "CCAA6DA1-F32F-45D5-AE00-F92107F2566C",
       "name": "🏋️‍♀️ Burn 500+ kcal 💯 ",
       "goal": 500,
       "unit": "kCal",
-      "area": "Daily",
-      "logs": [
-        {
-          "value": 0,
-          "unit": "kCal",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     },
     {
-      "id": "F4AE7A1E-BD8F-47AE-83CE-4969D975246F",
       "name": "🌞 Get 10min Morning Sun",
       "goal": 10,
       "unit": "min",
-      "area": "Daily",
-      "logs": [
-        {
-          "value": 0,
-          "unit": "min",
-          "status": "in_progress",
-          "target_date": "2025-07-28T00:00:00+00:00"
-        }
-      ]
+      "logs": []
     }
   ]
 }
